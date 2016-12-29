@@ -1,0 +1,5 @@
+# This file contains words to block from browser's URL path; All link will be verified
+# For this configuration, we block only a few sites
+youtube
+snapchat
+instagram
