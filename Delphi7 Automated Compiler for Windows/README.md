@@ -46,24 +46,44 @@ There are some compiler directives too, used when developers need (place -$<swit
    
    * Compiler switches: -$<state> (defaults are shown below)
         
-        A8  Aligned record fields
-        B-  Full boolean Evaluation
-        C+  Evaluate assertions at runtime
-        D+  Debug information
-        G+  Use imported data references
-        H+  Use long strings by default
-        I+  I/O checking
-        J-  Writeable structured consts
-        L+  Local debug symbols
-        M-  Runtime type info
-        O+  Optimization
-        P+  Open string params
-        Q-  Integer overflow checking
-        R-  Range checking
-        T-  Typed @ operator
-        U-  Pentium(tm)-safe divide
-        V+  Strict var-strings
-        W-  Generate stack frames
-        X+  Extended syntax
-        Y+  Symbol reference info
-        Z1  Minimum size of enum types    
+        * A8  Aligned record fields
+        
+        * B-  Full boolean Evaluation
+        
+        * C+  Evaluate assertions at runtime
+        
+        * D+  Debug information
+        
+        * G+  Use imported data references
+        
+        * H+  Use long strings by default
+        
+        * I+  I/O checking
+        
+        * J-  Writeable structured consts
+        
+        * L+  Local debug symbols
+        
+        * M-  Runtime type info
+        
+        * O+  Optimization
+        
+        * P+  Open string params
+        
+        * Q-  Integer overflow checking
+        
+        * R-  Range checking
+        
+        * T-  Typed @ operator
+        
+        * U-  Pentium(tm)-safe divide
+        
+        * V+  Strict var-strings
+        
+        * W-  Generate stack frames
+        
+        * X+  Extended syntax
+        
+        * Y+  Symbol reference info
+        
+        * Z1  Minimum size of enum types    
