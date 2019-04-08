@@ -1,22 +1,18 @@
 package forms;
 
 import objects.NFS;
-import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import javax.naming.LinkException;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static objects.NFS.getNFSObjectFromNode;
@@ -59,6 +55,8 @@ public class MainWindow {
                 if (returnDialogVal == JFileChooser.APPROVE_OPTION) {
                     setSelectedFile(excelFileChooser.getSelectedFile());
                     readFileContent(excelFileChooser.getSelectedFile());
+
+                    readAndDownloadHtmlFromNfs();
                 }
             }
         });
@@ -76,7 +74,7 @@ public class MainWindow {
         String lineToRead;// Try to read each line of file and put into textArea
         try (BufferedReader br = new BufferedReader(new FileReader(selectedFile.getAbsolutePath()))) {
             while ((lineToRead = br.readLine()) != null) {
-                NFS currentNFS = getNFSObjectFromNode(lineToRead);
+                NFS currentNFS = getNFSObjectFromNode(lineToRead, inscMunicipal);
                 arrayListNFS.add(currentNFS);
             }
         } catch (IOException | ParserConfigurationException | SAXException | XPathExpressionException e) {
@@ -86,4 +84,13 @@ public class MainWindow {
         textAreaFileContent.append(arrayListNFS.size() + " registros lidos." + LINE_BREAK);
     }
 
+    private void readAndDownloadHtmlFromNfs() {
+        for (int i = 0; i < arrayListNFS.size(); i++) {
+            NFS nota = arrayListNFS.get(i);
+
+            textAreaFileContent.append("** Download da nota fiscal " + nota.getNumber() + LINE_BREAK);
+            nota.getHtmlNfsContent();
+        }
+
+    }
 }
