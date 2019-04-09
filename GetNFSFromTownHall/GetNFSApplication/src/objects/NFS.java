@@ -1,19 +1,27 @@
 package objects;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import javax.swing.text.html.parser.DTD;
+import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import java.io.*;
-import java.net.MalformedURLException;
+import java.awt.*;
+import java.awt.print.PrinterException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.StringReader;
 import java.net.URL;
+import java.nio.charset.Charset;
 
 public class NFS {
     private String number;
@@ -21,6 +29,7 @@ public class NFS {
     private String tomador;
     private String cnpjCpf;
     private String downloadLink;
+    private String rootUrl = "http://www2.goiania.go.gov.br/";
 
     public NFS(String nfsNr, String nfsVerification, String nfsTomador, String nfsCnpjCpf, String inscMunicipal) {
         this.number = nfsNr;
@@ -31,8 +40,7 @@ public class NFS {
     }
 
     public static NFS getNFSObjectFromNode(String nodeLine, String inscMunicipal)
-            throws IOException, SAXException, ParserConfigurationException, XPathExpressionException
-    {
+            throws IOException, SAXException, ParserConfigurationException, XPathExpressionException {
         String xPathNfsNumber = "/GerarNfseResposta/ListaNfse/CompNfse/Nfse/InfNfse/Numero";
         String xPathNfsVerificationCode = "/GerarNfseResposta/ListaNfse/CompNfse/Nfse/InfNfse/CodigoVerificacao";
         String xPathNfsRazaoTomador = "/GerarNfseResposta/ListaNfse/CompNfse/Nfse/InfNfse/DeclaracaoPrestacaoServico/InfDeclaracaoPrestacaoServico/Tomador/RazaoSocial";
@@ -57,7 +65,7 @@ public class NFS {
     }
 
     private String writeDownloadLinkToField(String nfsNumber, String nfsVerificationCode, String inscMunicipal) {
-        String url = "http://www2.goiania.go.gov.br/sistemas/snfse/asp/snfse00200w0.asp?inscricao=%s&nota=%s&verificador=%s";
+        String url = rootUrl + "sistemas/snfse/asp/snfse00200w0.asp?inscricao=%s&nota=%s&verificador=%s";
         return String.format(url, inscMunicipal, nfsNumber, nfsVerificationCode);
     }
 
@@ -83,13 +91,29 @@ public class NFS {
 
     public void getHtmlNfsContent() {
         try {
+            // Getting URL to display to user
+            System.out.println(downloadLink + "\n");
+            URL nfseUrl = new URL(downloadLink);
+
+            // Retrieve and parse HTML content
+            Document parsedDocument = Jsoup.parse(nfseUrl, 15000);
+            parsedDocument.charset(Charset.forName("UTF-8"));
+            Elements imgElements = parsedDocument.getElementsByTag("img");
+            for (Element imgTag : imgElements) {
+                if (!imgTag.attr("src").contains(rootUrl))
+                    imgTag.attr("src", rootUrl + imgTag.attr("src"));
+            }
+
+            // Save HTML into new file to convert it
+            FileWriter fw = new FileWriter(String.valueOf(hashCode()) + ".html");
+            fw.append(parsedDocument.html());
+            fw.close();
 
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 
 
 }

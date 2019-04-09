@@ -53,10 +53,23 @@ public class MainWindow {
                 // If user select some file, we'll passing them to another function
                 int returnDialogVal = excelFileChooser.showOpenDialog(null);
                 if (returnDialogVal == JFileChooser.APPROVE_OPTION) {
+
+                    textAreaFileContent.append("Iniciando leitura do arquivo " + excelFileChooser.getSelectedFile() + LINE_BREAK);
+                    textAreaFileContent.append(LINE_BREAK);
+
                     setSelectedFile(excelFileChooser.getSelectedFile());
                     readFileContent(excelFileChooser.getSelectedFile());
 
+                    textAreaFileContent.append("** " + arrayListNFS.size() + " registros lidos." + LINE_BREAK);
+                    textAreaFileContent.append(LINE_BREAK);
+                    textAreaFileContent.append("Iniciando downloads ..." + LINE_BREAK);
+
                     readAndDownloadHtmlFromNfs();
+
+                    textAreaFileContent.append(LINE_BREAK);
+                    textAreaFileContent.append("DOWNLOADS FINALIZADOS ");
+
+                    arrayListNFS.clear();
                 }
             }
         });
@@ -81,16 +94,12 @@ public class MainWindow {
             e.printStackTrace();
         }
         // Finally, after add all content to Array, tell how many records was generated
-        textAreaFileContent.append(arrayListNFS.size() + " registros lidos." + LINE_BREAK);
     }
 
     private void readAndDownloadHtmlFromNfs() {
-        for (int i = 0; i < arrayListNFS.size(); i++) {
-            NFS nota = arrayListNFS.get(i);
-
+        for (NFS nota : arrayListNFS) {
             textAreaFileContent.append("** Download da nota fiscal " + nota.getNumber() + LINE_BREAK);
             nota.getHtmlNfsContent();
         }
-
     }
 }
