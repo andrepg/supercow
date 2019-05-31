@@ -120,5 +120,5 @@ if [ $# -gt 0 ]; then
     copy_files_to_deploy
 else
     echo -e "RUNTIME ERROR"
-    echo -e "Your command line contains no argument. Run it with --help to see more."
+    echo -e "Your command line contains no arguments. Run it with --help to see more."
 fi
