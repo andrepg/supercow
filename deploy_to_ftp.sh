@@ -29,28 +29,63 @@
 # Enjoy.
 #
 
+# Get filename without application/ preffix
+# echo ${file#"application/"}
+
 function show_help() {
-    echo 
-    echo 'Help of FTP deploy script'
-    echo
-    echo 'Usage :: run script with parameters and using BASH. All parameters are mandatory! '
-    echo 'All of them have fixed position. Do not change the order...'
-    echo
-    echo 'Command '
-    echo '  ~$: bash /script.sh [ ftpcon ftpuser ftppass ftpport workspace source target ] '
-    echo 
-    echo 'Parameters'
-    echo '  ftpcon    : FTP server address to connect '
-    echo '  ftpuser   : FTP username to connect @ server '
-    echo '  ftppass   : FTP password used by username @ server '
-    echo '  ftpport   : FTP port used by server to provide connection '
-    echo '  workspace : Workspace path where source code are located ( and git repo too! ) '
-    echo '  source    : Source commit of repo to check against target and get changelist '
-    echo '  target    : Target commit of repo used as reference of last stable modification '
-    echo 
-    echo
+    echo -e 
+    echo -e 'Help of FTP deploy script'
+    echo -e
+    echo -e 'Usage :: run script with parameters and using BASH. All parameters are mandatory! '
+    echo -e 'All of them have fixed position. Do not change the order...'
+    echo -e
+    echo -e 'Command '
+    echo -e '  ~$: bash /script.sh [ ftpcon ftpuser ftppass ftpport workspace source target ] '
+    echo -e 
+    echo -e 'Parameters'
+    echo -e '  ftpcon    : FTP server address to connect '
+    echo -e '  ftpuser   : FTP username to connect @ server '
+    echo -e '  ftppass   : FTP password used by username @ server '
+    echo -e '  ftpport   : FTP port used by server to provide connection '
+    echo -e '  workspace : Workspace path where source code are located ( and git repo too! ) '
+    echo -e '  source    : Source commit of repo to check against target and get changelist '
+    echo -e '  target    : Target commit of repo used as reference of last stable modification '
+    echo -e 
+    echo -e
 }
 
+function get_changelist() {
+    echo -e 'Getting changelist of repository'
+    cd -e $pWorkspace
+    git diff --name-only $pCommitSource $pCommitTarget | grep 'application/' >> changelist.file
+    sort -u changelist.file -o changelist.file
+}
+
+function copy_files_to_deploy() {
+    # Deleting and copying again to ensure that files are clean
+    rm -rf "$pWorkspace/files_to_deploy"
+    mkdir "$pWorkspace/files_to_deploy"
+
+    echo -e ""
+    echo -e "~~ List of changed files ..: "
+    echo -e ""
+
+    pFileCounter=0
+    while read file; do
+        if [ $file != *"/.gitignore" ]; then
+            echo "Copying $file"
+            cd -e $pWorkspace
+            cp -R --parents "$file" "$pWorkspace/files_to_deploy"
+        fi
+    done <"$pWorkspace/changelist.file"
+
+    echo ""
+    echo "Copy of files done!"
+}
+
+function open_ftp_connection() {
+    echo -e ""
+}
 
 ####### Main execution of script
 TITLE="Deploy to FTP Server"
@@ -74,13 +109,16 @@ if [ $# -gt 0 ]; then
     pCommitSource=$6
     pCommitTarget=$7
     
-    echo
-    echo ">> Script configured to connect on $pFtpConnection with $pFtpUsername"
-    echo ">> Using changelist files located at $pChangeList"
-    echo ">> Changelist file was based on diff between initial commit"
-    echo "$pCommitSource and last commit $pCommitTarget"
-    echo
+    echo -e
+    echo -e ">> Script configured to connect on $pFtpConnection with $pFtpUsername"
+    echo -e ">> Using changelist files located at $pChangeList"
+    echo -e ">> Changelist file was based on diff between initial commit" \
+         "$pCommitSource and last commit $pCommitTarget"
+    echo -e
+
+    get_changelist
+    copy_files_to_deploy
 else
-    echo "RUNTIME ERROR"
-    echo "Your command line contains no argument. Run it with --help to see more."
+    echo -e "RUNTIME ERROR"
+    echo -e "Your command line contains no argument. Run it with --help to see more."
 fi
