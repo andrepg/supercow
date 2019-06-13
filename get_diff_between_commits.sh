@@ -55,9 +55,13 @@ function copy_files_to_deploy() {
     pFileCounter=0
     while read file; do
         if [ $file != *"/.gitignore" ]; then
-            echo "Copying $file"
-            cd -e $pWorkspace
-            cp -R --parents "$file" "$pWorkspace/files_to_deploy"
+            # Getting original filename and target filename and path
+            pOriginalFile="$pWorkspace/$file"
+            pTargetFile="$pWorkspace/files_to_deploy/${file#'application/'}"
+            pDirectory=$(dirname $pTargetFile)
+
+            mkdir -p $pDirectory
+            cp --verbose $pOriginalFile $pTargetFile
         fi
     done <"$pWorkspace/changelist.file"
 
