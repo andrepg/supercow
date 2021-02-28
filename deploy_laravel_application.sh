@@ -1,18 +1,22 @@
 clear
 
-read -s "What is the folder name? " folderName
+echo "What is the folder name?" 
+read folderName
 
-echo "Creating path if not exists"
+echo "Checking folder existence"
 if [ -d $folderName ]; then
-  rm -fr $folderName
+  echo "Removing existent content to clone again"
+  rm -fr "$folderName/*"
 fi
 
-read -s "What is the repository name? " repoName
+echo "What is the repository name? "
+echo "Use GitHub Cli format ( owner/repo_name )"
+echo " -- if the owner part was ommited it would be used the current user as owner"
+echo " -- to learn more visit https://github.com/cli/cli"
+read repoName
 
-echo "Cloning forlife-web repository"
-gh repo clone $repoName $folderName
-
-cd $folderName
+echo "Cloning $repoName repository"
+gh repo clone $repoName $folderName && cd $folderName
 
 echo "Installing composer and npm dependencies"
 composer install && npm install
@@ -25,14 +29,19 @@ php artisan optimize
 echo "Compiling npm assets and production"
 npm run production
 
-read -s "We will do a rsync deploy? [ Y / N ] >> " doDeploy
+echo "We will do a rsync deploy? [ Y / N ]" 
+read doDeploy
 
-if [[ doDeploy == "Y" ]]; then
+if [[ $doDeploy == "Y" ]]; then
 
-  read -s "What is the remote path to our deploy? >> " $remotePath
+  echo "What is the remote path to our deploy?" 
+  read remotePath
 
   echo "Starting RSync deploy"
-  rsync -varzuP \
+  
+  # For more information visit https://explainshell.com/explain?cmd=rsync+-arzu+--human-readable+.%2Fpath%2F*+remotehost%3A%2Fremote%2Fpath
+  
+  rsync -arzu \
     --human-readable \
     --exclude '.env.example' \
     --exclude '.codeclimate.yml'
