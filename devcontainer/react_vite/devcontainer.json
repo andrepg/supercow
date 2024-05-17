@@ -1,0 +1,38 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/docker-existing-docker-compose
+{
+	"name": "your-container-name",
+	"dockerComposeFile": [
+		"../docker-compose.yml",
+		"docker-compose.yml"
+	],
+	"service": "frontend",
+	"postCreateCommand": "npm install --prefer-offline",
+	"features": {
+		"ghcr.io/cirolosapio/devcontainers-features/alpine-git:0": {}
+	},
+	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"dbaeumer.vscode-eslint",
+				"christian-kohler.npm-intellisense",
+				"bradlc.vscode-tailwindcss",
+				"vitest.explorer",
+				"seatonjiang.gitmoji-vscode",
+				"dsznajder.es7-react-js-snippets",
+				"esbenp.prettier-vscode",
+				"formulahendry.auto-rename-tag",
+				"planbcoding.vscode-react-refactor",
+				"albert.TabOut",
+				"xabikos.JavaScriptSnippets",
+				"christian-kohler.path-intellisense",
+				"ecmel.vscode-html-css",
+				"formulahendry.auto-close-tag",
+				"aaron-bond.better-comments",
+				"VisualStudioExptTeam.vscodeintellicode",
+				"Postman.postman-for-vscode"
+			]
+		}
+	}
+}
