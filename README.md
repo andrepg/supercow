@@ -15,3 +15,5 @@ Everybody has some common problems once in a while that could be easily achieved
 | Change Windows RDP Server | A ~honestly~ stolen script from somewhere. It changes the Windows Server RDP Name on web access, via PowerShell. *I don't really know how works*. | [see more](https://github.com/andrepg/supercow/blob/main/set_published_name_remote_desktop_winserver.ps1) |
 
 Checkout our [repository source code](https://github.com/andrepg/supercow/blob/main) to see more scripts.
+
+<!-- GitAds-Verify: 9U67G11QMC6N2RK71KJN4BC46XE7Z2FK -->
