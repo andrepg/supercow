@@ -17,3 +17,7 @@ Everybody has some common problems once in a while that could be easily achieved
 Checkout our [repository source code](https://github.com/andrepg/supercow/blob/main) to see more scripts.
 
 <!-- GitAds-Verify: 9U67G11QMC6N2RK71KJN4BC46XE7Z2FK -->
+
+## GitAds Sponsored
+[![Sponsored by GitAds](https://gitads.dev/v1/ad-serve?source=andrepg/supercow@github)](https://gitads.dev/v1/ad-track?source=andrepg/supercow@github)
+
