@@ -24,7 +24,7 @@ FLAGS="--enable-features=UseOzonePlatform,WaylandWindowDecorations --ozone-platf
 touch vscode.desktop
 echo "[Desktop Entry]" >> vscode.desktop
 echo "Name=Visual Studio Code" >> vscode.desktop
-echo "StartupWMClass=code-url-handler" >> vscode.desktop
+echo "StartupWMClass=code" >> vscode.desktop
 echo "Icon=$VSCODE_PATH/resources/app/resources/linux/code.png" >> vscode.desktop
 echo "Type=Application" >> vscode.desktop
 echo "Categories=Development;" >> vscode.desktop
